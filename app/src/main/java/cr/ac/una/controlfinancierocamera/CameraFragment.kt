@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.net.Uri
 import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.provider.MediaStore
@@ -21,9 +20,8 @@ import cr.ac.una.controlfinancierocamera.R
 
 class CameraFragment : Fragment() {
 
-    lateinit var captureButton : Button
-    lateinit var imageView : ImageView
-
+    lateinit var captureButton: Button
+    lateinit var imageView: ImageView
 
 
     private val requestCameraPermissionLauncher = registerForActivityResult(
@@ -47,7 +45,11 @@ class CameraFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_camera, container, false)
     }
 
@@ -78,7 +80,7 @@ class CameraFragment : Fragment() {
     }
 
     private fun dispatchTakePictureIntent() {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also {  takePictureIntent ->
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             takePictureIntent.resolveActivity(requireContext().packageManager)?.also {
                 takePictureLauncher.launch(takePictureIntent)
             }

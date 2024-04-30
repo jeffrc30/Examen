@@ -10,19 +10,20 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
 import cr.ac.menufragment.CameraFragment
-import cr.ac.menufragment.HomeFragment
+import cr.ac.menufragment.ListControlFinancieroFragment
+import cr.ac.una.controlfinanciero.adapter.MovimientoAdapter
+import cr.ac.una.controlfinancierocamera.controller.MovimientoController
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    var movimientoController: MovimientoController = MovimientoController()
 
     lateinit var drawerLayout: DrawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
 
         var toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -42,6 +43,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val navigationView = findViewById<NavigationView>(R.id.navigation_view)
         navigationView.setNavigationItemSelectedListener(this)
+
+
     }
 
 
@@ -59,7 +62,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (menuItem.getItemId()) {
             R.id.nav_camera -> {
                 title = R.string.menu_camera
-                fragment = HomeFragment.newInstance(getString(title))
+                fragment = ListControlFinancieroFragment()
             }
             R.id.nav_gallery -> {
                 title = R.string.menu_gallery
@@ -71,13 +74,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             else -> throw IllegalArgumentException("menu option not implemented!!")
         }
 
+
+        reemplazarFragmento(fragment, getString(title))
+        drawerLayout.closeDrawer(GravityCompat.START)
+        return true
+    }
+    fun reemplazarFragmento(fragment: Fragment, title:  String) {
         supportFragmentManager
             .beginTransaction()
             //.setCustomAnimations(R.anim.bottom_nav_enter, R.anim.bottom_nav_exit)
             .replace(R.id.home_content, fragment)
             .commit()
-        setTitle(getString(title))
-        drawerLayout.closeDrawer(GravityCompat.START)
-        return true
+        setTitle(title)
     }
 }
