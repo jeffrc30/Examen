@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MovimientoService {
     val client = OkHttpClient.Builder()
-        .addInterceptor(AuthInterceptor("U1xIqs39A09cmfpUSpP_Mis54d1ElzUfQx_oyB7wuCccfEkDBQ"))
+        .addInterceptor(AuthInterceptor("ha0pbq3_k77oyaJDdxMN7PlUPf6ibFljVMwgWja75UdyfTdu2g"))
         .build()
 
     val gson = GsonBuilder().setPrettyPrinting().create()

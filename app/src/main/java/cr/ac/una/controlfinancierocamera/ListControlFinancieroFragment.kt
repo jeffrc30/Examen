@@ -14,10 +14,8 @@ import cr.ac.una.controlfinancierocamera.MainActivity
 import cr.ac.una.controlfinancierocamera.R
 import cr.ac.una.controlfinancierocamera.controller.MovimientoController
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.internal.notify
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -50,7 +48,7 @@ class ListControlFinancieroFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val botonNuevo = view.findViewById<Button>(R.id.botonNuevo)
+        val botonNuevo = view.findViewById<Button>(R.id.botonIngresar)
         botonNuevo.setOnClickListener {
             insertEntity()
         }
@@ -78,6 +76,4 @@ class ListControlFinancieroFragment : Fragment() {
         val mainActivity = context as MainActivity
         //mainActivity.adapter.notifyDataSetChanged()
     }
-
-
 }

@@ -1,5 +1,6 @@
 package cr.ac.una.controlfinanciero.adapter
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -39,27 +40,47 @@ class MovimientoAdapter (context:Context, movimientos:List<Movimiento>):
 
         var bottonDelete = view.findViewById<ImageButton>(R.id.button_delete)
         bottonDelete.setOnClickListener{
-            val mainActivity = context as MainActivity
-            GlobalScope.launch(Dispatchers.Main) {
-                movimiento?.let { it1 -> mainActivity.movimientoController.deleteMovimiento(it1) }
-                clear()
-                addAll(mainActivity.movimientoController.listMovimientos())
-                notifyDataSetChanged()
-                notifyDataSetChanged()
-            }
+            mostrarConfirmacionBorrado(getItem(position))
         }
+
         var bottonUpdate = view.findViewById<ImageButton>(R.id.button_update)
         bottonUpdate.setOnClickListener{
-            val fragment = CameraFragment()
+            /*val fragment = CameraFragment()
             val fragmentManager = (context as MainActivity).supportFragmentManager
             val transaction = fragmentManager.beginTransaction()
             transaction.replace(R.id.home_content, fragment)
             transaction.addToBackStack(null) // Agrega la transacción a la pila de retroceso
-            transaction.commit()
+            transaction.commit()*/
+            //val uuid = movimiento?._uuid
+            movimiento?.let { logMovimientoInfo(it) }
         }
-
-
-
         return view
+    }
+
+    private fun mostrarConfirmacionBorrado(movimiento: Movimiento?) {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Confirmar")
+        builder.setMessage("¿Estás seguro de que deseas borrar este dato?")
+        builder.setPositiveButton("Sí") { dialog, which ->
+            movimiento?.let { borrarMovimiento(it) }
+        }
+        builder.setNegativeButton("No") { dialog, which -> }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun borrarMovimiento(movimiento: Movimiento) {
+        val mainActivity = context as MainActivity
+        GlobalScope.launch(Dispatchers.Main) {
+            mainActivity.movimientoController.deleteMovimiento(movimiento)
+            clear()
+            addAll(mainActivity.movimientoController.listMovimientos())
+            notifyDataSetChanged()
+        }
+    }
+
+    private fun logMovimientoInfo(movimiento: Movimiento){
+        val logMessage = "UUID: ${movimiento._uuid}, Monto: ${movimiento.monto}, Tipo: ${movimiento.tipo}, Fecha: ${movimiento.fecha}"
+        println(logMessage)
     }
 }

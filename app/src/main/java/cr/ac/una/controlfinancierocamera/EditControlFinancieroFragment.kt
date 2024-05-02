@@ -2,6 +2,7 @@ package cr.ac.una.controlfinancierocamera
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -19,6 +20,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.drawToBitmap
 import cr.ac.una.controlfinancierocamera.entity.Movimiento
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -32,8 +34,9 @@ class EditControlFinancieroFragment : Fragment() {
     lateinit var captureButton : Button
     lateinit var imageView : ImageView
     lateinit var elementoSeleccionado : String
-
-
+    lateinit var monto: TextView
+    lateinit var fecha: TextView
+    lateinit var img: ImageView
 
     private val requestCameraPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -61,21 +64,33 @@ class EditControlFinancieroFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val botonNuevo = view.findViewById<Button>(R.id.saveMovimientoButton)
 
-        val monto = view.findViewById<TextView>(R.id.textMonto)
+        monto = view.findViewById<TextView>(R.id.textMonto)
 
-        val fecha = view.findViewById<TextView>(R.id.textFecha)
+        fecha = view.findViewById<TextView>(R.id.textFecha)
+
+        img = view.findViewById<ImageView>(R.id.imageView)
+
         botonNuevo.setOnClickListener {
+            val confirmationDialog = AlertDialog.Builder(requireContext())
+                .setTitle("Confirmación")
+                .setMessage("¿Deseas ingresar este movimiento?")
+                .setPositiveButton("Sí") { dialog, which ->
+                    // Usuario ha confirmado, guarda el movimiento
+                    guardarMovimiento()
+                }
+                .setNegativeButton("No", null)
+                .create()
 
-            var movimiento = Movimiento(null,monto.text.toString().toDouble(), elementoSeleccionado, fecha.text.toString())
-            val actividad = activity as MainActivity
-            GlobalScope.launch(Dispatchers.IO) {
-                actividad.movimientoController.insertMovimiento(movimiento)
-                //regresa al fragmento anterior
-
-                val fragmentManager = requireActivity().supportFragmentManager
-                fragmentManager.popBackStack()
-            }
+            confirmationDialog.show()
         }
+
+        val cancelButton = view.findViewById<Button>(R.id.cancelBotton)
+        cancelButton.setOnClickListener {
+            // Regresa al fragmento anterior
+            val fragmentManager = requireActivity().supportFragmentManager
+            fragmentManager.popBackStack()
+        }
+
         val spinner: Spinner = view.findViewById(R.id.tipoMovimientoSpinner)
 
         ArrayAdapter.createFromResource(
@@ -115,6 +130,23 @@ class EditControlFinancieroFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun guardarMovimiento() {
+        val movimiento = Movimiento(
+            null,
+            monto.text.toString().toDouble(),
+            elementoSeleccionado,
+            fecha.text.toString(),
+            img.drawToBitmap()
+        )
+        val actividad = activity as MainActivity
+        GlobalScope.launch(Dispatchers.IO) {
+            actividad.movimientoController.insertMovimiento(movimiento)
+            // Regresa al fragmento anterior
+            val fragmentManager = requireActivity().supportFragmentManager
+            fragmentManager.popBackStack()
+        }
     }
 
     override fun onCreateView(
