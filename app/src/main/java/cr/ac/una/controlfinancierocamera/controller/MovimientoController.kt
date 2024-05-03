@@ -26,5 +26,9 @@ class MovimientoController {
             return movimientoService.apiService.getItems().items as ArrayList<Movimiento>
     }
 
+    suspend fun editarMovimiento(movimiento: Movimiento){
+        movimiento._uuid?.let { movimientoService.apiService.updateItem(it, movimiento) }
+    }
+
 
 }

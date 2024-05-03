@@ -9,7 +9,7 @@ import android.widget.Button
 import android.widget.ListView
 import androidx.lifecycle.lifecycleScope
 import cr.ac.una.controlfinanciero.adapter.MovimientoAdapter
-import cr.ac.una.controlfinancierocamera.EditControlFinancieroFragment
+import cr.ac.una.controlfinancierocamera.IngresarMovimientoFragment
 import cr.ac.una.controlfinancierocamera.MainActivity
 import cr.ac.una.controlfinancierocamera.R
 import cr.ac.una.controlfinancierocamera.controller.MovimientoController
@@ -63,7 +63,7 @@ class ListControlFinancieroFragment : Fragment() {
     }
 
     private fun insertEntity() {
-        val fragment = EditControlFinancieroFragment()
+        val fragment = IngresarMovimientoFragment()
         val fragmentManager = (context as MainActivity).supportFragmentManager
         val transaction = fragmentManager.beginTransaction()
         transaction.replace(R.id.home_content, fragment)

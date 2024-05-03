@@ -4,34 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditControlFinancieroFragment">
+    tools:context=".IngresarMovimientoFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <EditText
-            android:id="@+id/textMonto"
+            android:id="@+id/textMontoEditar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="number"
-            app:layout_constraintBottom_toTopOf="@+id/textFecha"
+            app:layout_constraintBottom_toTopOf="@+id/textFechaEditar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
-            android:id="@+id/textFecha"
+            android:id="@+id/textFechaEditar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="date"
-            app:layout_constraintBottom_toTopOf="@+id/tipoMovimientoSpinner"
+            app:layout_constraintBottom_toTopOf="@+id/tipoMovimientoSpinnerEditar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/saveMovimientoButton"
+            android:id="@+id/saveMovimientoButtonEditar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -41,27 +41,27 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Spinner
-            android:id="@+id/tipoMovimientoSpinner"
+            android:id="@+id/tipoMovimientoSpinnerEditar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
-            app:layout_constraintBottom_toTopOf="@+id/imageView"
+            app:layout_constraintBottom_toTopOf="@+id/imageViewEditar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/imageViewEditar"
             android:layout_width="290dp"
             android:layout_height="188dp"
             android:layout_marginBottom="32dp"
             android:scaleType="fitCenter"
-            app:layout_constraintBottom_toTopOf="@+id/captureButton"
+            app:layout_constraintBottom_toTopOf="@+id/captureButtonEditar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/captureButton"
+            android:id="@+id/captureButtonEditar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -74,7 +74,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/cancelBotton"
+            android:id="@+id/cancelButtonEditar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"

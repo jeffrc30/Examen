@@ -3,6 +3,8 @@ package cr.ac.una.controlfinanciero.adapter
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,7 @@ import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.lifecycleScope
 import cr.ac.menufragment.CameraFragment
+import cr.ac.una.controlfinancierocamera.EditarMovimientoFragment
 import cr.ac.una.controlfinancierocamera.MainActivity
 import cr.ac.una.controlfinancierocamera.R
 
@@ -45,18 +48,24 @@ class MovimientoAdapter (context:Context, movimientos:List<Movimiento>):
 
         var bottonUpdate = view.findViewById<ImageButton>(R.id.button_update)
         bottonUpdate.setOnClickListener{
-            /*val fragment = CameraFragment()
-            val fragmentManager = (context as MainActivity).supportFragmentManager
-            val transaction = fragmentManager.beginTransaction()
-            transaction.replace(R.id.home_content, fragment)
-            transaction.addToBackStack(null) // Agrega la transacción a la pila de retroceso
-            transaction.commit()*/
-            //val uuid = movimiento?._uuid
-            movimiento?.let { logMovimientoInfo(it) }
+            val movimiento = getItem(position)
+            Log.d("NombreDeTuApp", "Movimiento: $movimiento")
+            editarMovimiento(movimiento)
         }
         return view
     }
 
+    private fun editarMovimiento(movimiento: Movimiento?){
+        val fragment = EditarMovimientoFragment()
+        val args = Bundle()
+        args.putSerializable("movimiento", movimiento)
+        fragment.arguments = args
+        val fragmentManager = (context as MainActivity).supportFragmentManager
+        val transaction = fragmentManager.beginTransaction()
+        transaction.replace(R.id.home_content, fragment)
+        transaction.addToBackStack(null) // Agrega la transacción a la pila de retroceso
+        transaction.commit()
+    }
     private fun mostrarConfirmacionBorrado(movimiento: Movimiento?) {
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Confirmar")

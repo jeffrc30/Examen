@@ -25,10 +25,9 @@ import cr.ac.una.controlfinancierocamera.entity.Movimiento
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.Date
 
 
-class EditControlFinancieroFragment : Fragment() {
+class IngresarMovimientoFragment : Fragment() {
 
 
     lateinit var captureButton : Button
@@ -62,13 +61,13 @@ class EditControlFinancieroFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val botonNuevo = view.findViewById<Button>(R.id.saveMovimientoButton)
+        val botonNuevo = view.findViewById<Button>(R.id.saveMovimientoButtonEditar)
 
-        monto = view.findViewById<TextView>(R.id.textMonto)
+        monto = view.findViewById<TextView>(R.id.textMontoEditar)
 
-        fecha = view.findViewById<TextView>(R.id.textFecha)
+        fecha = view.findViewById<TextView>(R.id.textFechaEditar)
 
-        img = view.findViewById<ImageView>(R.id.imageView)
+        img = view.findViewById<ImageView>(R.id.imageViewEditar)
 
         botonNuevo.setOnClickListener {
             val confirmationDialog = AlertDialog.Builder(requireContext())
@@ -84,14 +83,14 @@ class EditControlFinancieroFragment : Fragment() {
             confirmationDialog.show()
         }
 
-        val cancelButton = view.findViewById<Button>(R.id.cancelBotton)
+        val cancelButton = view.findViewById<Button>(R.id.cancelButtonEditar)
         cancelButton.setOnClickListener {
             // Regresa al fragmento anterior
             val fragmentManager = requireActivity().supportFragmentManager
             fragmentManager.popBackStack()
         }
 
-        val spinner: Spinner = view.findViewById(R.id.tipoMovimientoSpinner)
+        val spinner: Spinner = view.findViewById(R.id.tipoMovimientoSpinnerEditar)
 
         ArrayAdapter.createFromResource(
             view.context,
@@ -119,8 +118,8 @@ class EditControlFinancieroFragment : Fragment() {
                 // Se llama cuando no hay ningún elemento seleccionado
             }
         }
-        captureButton = view.findViewById(R.id.captureButton)
-        imageView = view.findViewById(R.id.imageView)
+        captureButton = view.findViewById(R.id.captureButtonEditar)
+        imageView = view.findViewById(R.id.imageViewEditar)
 
         captureButton.setOnClickListener {
             if (checkCameraPermission()) {
@@ -154,8 +153,9 @@ class EditControlFinancieroFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_control_financiero, container, false)
-    }private fun checkCameraPermission(): Boolean {
+        return inflater.inflate(R.layout.fragment_ingresar_movimiento, container, false)
+    }
+    private fun checkCameraPermission(): Boolean {
         return ContextCompat.checkSelfPermission(
             requireContext(),
             Manifest.permission.CAMERA
