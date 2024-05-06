@@ -10,8 +10,6 @@ import kotlinx.coroutines.launch
 class MovimientoController {
     var movimientoService= MovimientoService()
 
-
-
     suspend fun insertMovimiento(movimiento: Movimiento){
 
             var movimientos: ArrayList<Movimiento> = arrayListOf()
@@ -30,5 +28,7 @@ class MovimientoController {
         movimiento._uuid?.let { movimientoService.apiService.updateItem(it, movimiento) }
     }
 
-
+    suspend fun getItem(movimiento: Movimiento){
+        movimiento._uuid?.let { movimientoService.apiService.getItem(it) }
+    }
 }

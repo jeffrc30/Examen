@@ -112,7 +112,7 @@
             android:layout_marginEnd="41dp"
             android:text="Agregar imagen:"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/imageViewEditar"
+            app:layout_constraintEnd_toStartOf="@+id/imageView"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTipo" />
@@ -133,7 +133,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tvImagen" />
 
         <ImageView
-            android:id="@+id/imageViewEditar"
+            android:id="@+id/imageView"
             android:layout_width="143dp"
             android:layout_height="119dp"
             android:layout_marginStart="20dp"
@@ -153,7 +153,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageViewEditar">
+            app:layout_constraintTop_toBottomOf="@+id/imageView">
 
             <Button
                 android:id="@+id/saveMovimientoButtonEditar"
@@ -164,7 +164,7 @@
                 android:text="Ingresar"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewEditar" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
             <Button
                 android:id="@+id/cancelButtonEditar"

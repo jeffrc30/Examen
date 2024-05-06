@@ -116,12 +116,12 @@
             android:layout_marginEnd="41dp"
             android:text="Agregar imagen:"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/imageViewEditar"
+            app:layout_constraintEnd_toStartOf="@+id/imageView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTipo" />
 
         <ImageView
-            android:id="@+id/imageViewEditar"
+            android:id="@+id/imageView"
             android:layout_width="194dp"
             android:layout_height="130dp"
             android:layout_marginTop="16dp"
@@ -143,7 +143,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="8dp"
             android:text="Capturar Imagen"
-            app:layout_constraintEnd_toStartOf="@+id/imageViewEditar"
+            app:layout_constraintEnd_toStartOf="@+id/imageView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvImagen" />
 
@@ -155,7 +155,7 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageViewEditar">
+            app:layout_constraintTop_toBottomOf="@+id/imageView">
 
             <Button
                 android:id="@+id/saveMovimientoButtonEditar"
@@ -166,7 +166,7 @@
                 android:text="Ingresar"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewEditar" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
 
             <Button
@@ -179,7 +179,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/saveMovimientoButtonEditar"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewEditar" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView" />
         </LinearLayout>
 
 

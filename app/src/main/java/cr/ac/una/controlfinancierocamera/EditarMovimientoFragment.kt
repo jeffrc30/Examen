@@ -7,8 +7,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.fragment.app.Fragment
@@ -69,24 +67,17 @@ class EditarMovimientoFragment : Fragment() {
         tipoMovimientoSpinner = view.findViewById(R.id.tipoMovimientoSpinnerEditar)
         montoEditText = view.findViewById(R.id.textMontoEditar)
         datePicker = view.findViewById(R.id.textFechaEditar)
-        imageView = view.findViewById<ImageView>(R.id.imageViewEditar)
+        imageView = view.findViewById<ImageView>(R.id.imageView)
 
         movimiento = arguments?.getSerializable("movimiento") as Movimiento
 
         montoEditText.text = movimiento.monto.toString()
         val fecha = movimiento.fecha.split("/")
         datePicker.updateDate(fecha[2].toInt(), fecha[1].toInt(), fecha[0].toInt())
+        captureButton = view.findViewById(R.id.captureButtonEditar)
+        imageView = view.findViewById(R.id.imageView)
 
         imageView.setImageBitmap(movimiento.img)
-
-
-
-
-
-
-        /*val bitmap: Bitmap = movimiento.img
-        val drawable = BitmapDrawable(resources, bitmap)
-        imageView.setImageDrawable(drawable)*/
 
         val tiposMovimiento = resources.getStringArray(R.array.tiposMovimiento)
         ArrayAdapter.createFromResource(
@@ -109,9 +100,6 @@ class EditarMovimientoFragment : Fragment() {
             // Regresar al fragmento anterior sin guardar cambios
             requireActivity().supportFragmentManager.popBackStack()
         }
-
-        captureButton = view.findViewById(R.id.captureButtonEditar)
-        imageView = view.findViewById(R.id.imageViewEditar)
 
         captureButton.setOnClickListener {
             if (checkCameraPermission()) {

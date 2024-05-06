@@ -70,7 +70,7 @@ class IngresarMovimientoFragment : Fragment() {
 
       //  fecha = view.findViewById<TextView>(R.id.textFechaEditar)
 
-        img = view.findViewById<ImageView>(R.id.imageViewEditar)
+        img = view.findViewById<ImageView>(R.id.imageView)
 
         botonNuevo.setOnClickListener {
             val confirmationDialog = AlertDialog.Builder(requireContext())
@@ -122,7 +122,7 @@ class IngresarMovimientoFragment : Fragment() {
             }
         }
         captureButton = view.findViewById(R.id.captureButtonEditar)
-        imageView = view.findViewById(R.id.imageViewEditar)
+        imageView = view.findViewById(R.id.imageView)
 
         captureButton.setOnClickListener {
             if (checkCameraPermission()) {
@@ -177,6 +177,4 @@ class IngresarMovimientoFragment : Fragment() {
             }
         }
     }
-
-
 }

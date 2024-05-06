@@ -65,6 +65,9 @@ class MovimientoAdapter (context:Context, movimientos:List<Movimiento>):
         transaction.replace(R.id.home_content, fragment)
         transaction.addToBackStack(null) // Agrega la transacción a la pila de retroceso
         transaction.commit()
+        /*movimiento?.let {
+            logMovimientoInfo(it)
+        }*/
     }
     private fun mostrarConfirmacionBorrado(movimiento: Movimiento?) {
         val builder = AlertDialog.Builder(context)
@@ -89,7 +92,7 @@ class MovimientoAdapter (context:Context, movimientos:List<Movimiento>):
     }
 
     private fun logMovimientoInfo(movimiento: Movimiento){
-        val logMessage = "UUID: ${movimiento._uuid}, Monto: ${movimiento.monto}, Tipo: ${movimiento.tipo}, Fecha: ${movimiento.fecha}"
+        val logMessage = "UUID: ${movimiento._uuid}, Monto: ${movimiento.monto}, Tipo: ${movimiento.tipo}, Fecha: ${movimiento.fecha}, Imagen: ${movimiento.img}"
         println(logMessage)
     }
 }

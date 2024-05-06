@@ -57,7 +57,7 @@ class CameraFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         captureButton = view.findViewById(R.id.captureButtonEditar)
-        imageView = view.findViewById(R.id.imageViewEditar)
+        imageView = view.findViewById(R.id.imageView)
 
         captureButton.setOnClickListener {
             if (checkCameraPermission()) {
