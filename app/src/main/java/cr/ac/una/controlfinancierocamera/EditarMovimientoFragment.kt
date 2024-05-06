@@ -17,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.DatePicker
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
@@ -28,6 +29,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+
 class EditarMovimientoFragment : Fragment() {
 
     lateinit var saveButton: Button
@@ -35,7 +37,7 @@ class EditarMovimientoFragment : Fragment() {
     lateinit var captureButton : Button
     lateinit var tipoMovimientoSpinner: Spinner
     lateinit var montoEditText: TextView
-    lateinit var fechaEditText: TextView
+    private lateinit var datePicker: DatePicker
     lateinit var imageView: ImageView
     lateinit var movimiento: Movimiento
 
@@ -66,13 +68,22 @@ class EditarMovimientoFragment : Fragment() {
         cancelButton = view.findViewById(R.id.cancelButtonEditar)
         tipoMovimientoSpinner = view.findViewById(R.id.tipoMovimientoSpinnerEditar)
         montoEditText = view.findViewById(R.id.textMontoEditar)
-        fechaEditText = view.findViewById(R.id.textFechaEditar)
+        datePicker = view.findViewById(R.id.textFechaEditar)
         imageView = view.findViewById<ImageView>(R.id.imageViewEditar)
 
         movimiento = arguments?.getSerializable("movimiento") as Movimiento
 
         montoEditText.text = movimiento.monto.toString()
-        fechaEditText.text = movimiento.fecha
+        val fecha = movimiento.fecha.split("/")
+        datePicker.updateDate(fecha[2].toInt(), fecha[1].toInt(), fecha[0].toInt())
+
+        imageView.setImageBitmap(movimiento.img)
+
+
+
+
+
+
         /*val bitmap: Bitmap = movimiento.img
         val drawable = BitmapDrawable(resources, bitmap)
         imageView.setImageDrawable(drawable)*/
@@ -149,16 +160,18 @@ class EditarMovimientoFragment : Fragment() {
 
     private fun guardarMovimiento() {
         val nuevoMonto = montoEditText.text.toString().toDouble()
-        val nuevaFecha = fechaEditText.text.toString()
+        val nuevaFecha = datePicker.dayOfMonth.toString() + "/" + datePicker.month.toString() + "/" + datePicker.year.toString()
         val nuevoTipo = tipoMovimientoSpinner.selectedItem.toString()
-        //val nuevoImg = obtenerBitmapDesdeImageView(imageView)
+        val bitmap: Bitmap = imageView.drawToBitmap()
+       // val nuevoImg = obtenerBitmapDesdeImageView(imageView)
+
 
         val movimientoActualizado = Movimiento(
             movimiento._uuid,
             nuevoMonto,
             nuevoTipo,
             nuevaFecha,
-            imageView.drawToBitmap()
+            bitmap,
         )
         val actividad = activity as MainActivity
         GlobalScope.launch(Dispatchers.IO) {

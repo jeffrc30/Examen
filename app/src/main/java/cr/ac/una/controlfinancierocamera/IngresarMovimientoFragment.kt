@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.DatePicker
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
@@ -34,8 +35,9 @@ class IngresarMovimientoFragment : Fragment() {
     lateinit var imageView : ImageView
     lateinit var elementoSeleccionado : String
     lateinit var monto: TextView
-    lateinit var fecha: TextView
+    private lateinit var datePicker: DatePicker
     lateinit var img: ImageView
+
 
     private val requestCameraPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -64,8 +66,9 @@ class IngresarMovimientoFragment : Fragment() {
         val botonNuevo = view.findViewById<Button>(R.id.saveMovimientoButtonEditar)
 
         monto = view.findViewById<TextView>(R.id.textMontoEditar)
+        datePicker = view.findViewById(R.id.datePicker)
 
-        fecha = view.findViewById<TextView>(R.id.textFechaEditar)
+      //  fecha = view.findViewById<TextView>(R.id.textFechaEditar)
 
         img = view.findViewById<ImageView>(R.id.imageViewEditar)
 
@@ -136,7 +139,8 @@ class IngresarMovimientoFragment : Fragment() {
             null,
             monto.text.toString().toDouble(),
             elementoSeleccionado,
-            fecha.text.toString(),
+            datePicker.dayOfMonth.toString() + "/" + datePicker.month.toString() + "/" + datePicker.year.toString(),
+            //fecha.text.toString(),
             img.drawToBitmap()
         )
         val actividad = activity as MainActivity
@@ -173,4 +177,6 @@ class IngresarMovimientoFragment : Fragment() {
             }
         }
     }
+
+
 }
