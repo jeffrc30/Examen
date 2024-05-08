@@ -77,7 +77,7 @@ class EditarMovimientoFragment : Fragment() {
         captureButton = view.findViewById(R.id.captureButtonEditar)
         imageView = view.findViewById(R.id.imageView)
 
-        imageView.setImageBitmap(movimiento.img)
+        //imageView.setImageBitmap(movimiento.img)
 
         val tiposMovimiento = resources.getStringArray(R.array.tiposMovimiento)
         ArrayAdapter.createFromResource(
