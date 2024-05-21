@@ -1,6 +1,7 @@
 package cr.ac.menufragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import cr.ac.una.controlfinancierocamera.IngresarMovimientoFragment
 import cr.ac.una.controlfinancierocamera.MainActivity
 import cr.ac.una.controlfinancierocamera.R
 import cr.ac.una.controlfinancierocamera.controller.MovimientoController
+import cr.ac.una.controlfinancierocamera.controller.PageController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -27,6 +29,8 @@ class ListControlFinancieroFragment : Fragment() {
     private var param1: String? = null
     lateinit var adapter: MovimientoAdapter
     val movimientoController = MovimientoController()
+    val pageController = PageController();
+    var datoPruebaBusqueda: String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,13 +67,15 @@ class ListControlFinancieroFragment : Fragment() {
     }
 
     private fun insertEntity() {
-        val fragment = IngresarMovimientoFragment()
-        val fragmentManager = (context as MainActivity).supportFragmentManager
-        val transaction = fragmentManager.beginTransaction()
-        transaction.replace(R.id.home_content, fragment)
-        transaction.addToBackStack(null) // Agrega la transacción a la pila de retroceso
-        transaction.commit()
-
+        datoPruebaBusqueda = "Costa_Rica"
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                val resultadoBusqueda = pageController.Buscar(datoPruebaBusqueda)
+                withContext(Dispatchers.Main) {
+                    Log.d("ResultadoBusqueda", resultadoBusqueda.toString())
+                }
+            }
+        }
     }
 
     fun actualizarData() {
