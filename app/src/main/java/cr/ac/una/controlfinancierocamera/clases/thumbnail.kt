@@ -1,3 +1,5 @@
 package cr.ac.una.controlfinancierocamera.clases
 
-data class thumbnail (var thumbnail: String)
+import java.io.Serializable
+
+data class thumbnail (var source: String):Serializable

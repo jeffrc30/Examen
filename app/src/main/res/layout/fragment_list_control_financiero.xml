@@ -13,25 +13,38 @@
         <!-- ListView con restricciones similares al ConstraintLayout -->
 
         <!-- Botón con restricciones similares al ConstraintLayout -->
+
         <ListView
             android:id="@+id/listaMovimientos"
             android:layout_width="409dp"
             android:layout_height="660dp"
-            android:layout_marginStart="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/botonIngresar"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/buscadorView" />
 
         <Button
             android:id="@+id/botonIngresar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ingresar"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="Buscar"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/buscadorView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <SearchView
+            android:id="@+id/buscadorView"
+            android:layout_width="292dp"
+            android:layout_height="69dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/listaMovimientos" />
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

@@ -5,6 +5,6 @@ import java.io.Serializable
 data class page (
     var title: String,
     var thumbnail: thumbnail,
-    var extract :String,
-    var normalizedTitle: titles
+    var titles: titles,
+    var extract :String
 ): Serializable

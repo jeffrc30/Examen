@@ -1,5 +1,6 @@
 package cr.ac.menufragment
 
+import retrofit2.HttpException
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ListView
+import android.widget.SearchView
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import cr.ac.una.controlfinanciero.adapter.MovimientoAdapter
 import cr.ac.una.controlfinancierocamera.IngresarMovimientoFragment
@@ -31,7 +34,8 @@ class ListControlFinancieroFragment : Fragment() {
     val movimientoController = MovimientoController()
     val pageController = PageController();
     var datoPruebaBusqueda: String = ""
-
+    private lateinit var botonBuscar: Button
+    private lateinit var buscadorView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,9 +56,14 @@ class ListControlFinancieroFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val botonNuevo = view.findViewById<Button>(R.id.botonIngresar)
-        botonNuevo.setOnClickListener {
-            insertEntity()
+        botonBuscar = view.findViewById<Button>(R.id.botonIngresar)
+        buscadorView = view.findViewById(R.id.buscadorView)
+
+        botonBuscar.setOnClickListener {
+            var textoBusqueda = buscadorView.query.toString()
+            textoBusqueda = textoBusqueda.replace(" ", "_")
+            Log.d("TextoBusqueda", textoBusqueda)
+            insertEntity(textoBusqueda)
         }
         lifecycleScope.launch {
             withContext(Dispatchers.Main) {
@@ -66,13 +75,25 @@ class ListControlFinancieroFragment : Fragment() {
         }
     }
 
-    private fun insertEntity() {
-        datoPruebaBusqueda = "Costa_Rica"
+    private fun insertEntity(textoBusqueda: String) {
         lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-                val resultadoBusqueda = pageController.Buscar(datoPruebaBusqueda)
+            try {
+                val resultadoBusqueda = withContext(Dispatchers.IO) {
+                    pageController.Buscar(textoBusqueda)
+                }
                 withContext(Dispatchers.Main) {
                     Log.d("ResultadoBusqueda", resultadoBusqueda.toString())
+                    // Actualiza la interfaz de usuario con el resultado si es necesario
+                }
+            } catch (e: HttpException) {
+                withContext(Dispatchers.Main) {
+                    Log.e("HTTP_ERROR", "Error: ${e.message}")
+                    Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Log.e("ERROR", "Error: ${e.message}")
+                    Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }
