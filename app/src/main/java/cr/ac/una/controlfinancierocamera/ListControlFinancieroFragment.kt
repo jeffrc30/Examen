@@ -70,10 +70,10 @@ class ListControlFinancieroFragment : Fragment() {
         buscadorAdapter = BuscadorAdapter(requireContext(), mutableListOf())
         listView.adapter = buscadorAdapter
 
-        cargarEjemplos()
+        //cargarEjemplos()
     }
 
-    private fun cargarEjemplos() {
+    /*private fun cargarEjemplos() {
         val ejemplos = listOf(
             page(
                 title = "Ejemplo 1",
@@ -89,7 +89,7 @@ class ListControlFinancieroFragment : Fragment() {
             )
         )
         buscadorAdapter.addAll(ejemplos)
-    }
+    }*/
 
 
     /*private fun insertEntity(textoBusqueda: String) {
@@ -139,5 +139,4 @@ class ListControlFinancieroFragment : Fragment() {
             }
         }
     }
-
 }
