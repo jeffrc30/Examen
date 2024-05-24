@@ -33,7 +33,6 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="8dp"
         android:text="TextView"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton"
         app:layout_constraintStart_toEndOf="@+id/tipo"
         app:layout_constraintTop_toTopOf="parent" />
 

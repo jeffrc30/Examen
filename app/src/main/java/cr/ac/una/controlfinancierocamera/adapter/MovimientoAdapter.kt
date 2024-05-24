@@ -2,7 +2,6 @@ package cr.ac.una.controlfinanciero.adapter
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -32,7 +31,7 @@ class MovimientoAdapter (context:Context, movimientos:List<Movimiento>):
 
         var view = LayoutInflater.from(context)
             .inflate(R.layout.list_item, parent, false)
-        val monto = view.findViewById<TextView>(R.id.monto)
+        val monto = view.findViewById<TextView>(R.id.tipo)
         val tipo = view.findViewById<TextView>(R.id.tipo)
         val fecha = view.findViewById<TextView>(R.id.fecha)
 
