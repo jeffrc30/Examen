@@ -1,7 +1,6 @@
 package cr.ac.una.controlfinancierocamera.controller
 
 import cr.ac.una.controlfinancierocamera.clases.page
-import cr.ac.una.controlfinancierocamera.entity.Movimiento
 import cr.ac.una.controlfinancierocamera.service.PagesService
 
 class PageController {

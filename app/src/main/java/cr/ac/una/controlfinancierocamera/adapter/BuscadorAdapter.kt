@@ -37,4 +37,3 @@ class BuscadorAdapter(context: Context, pages: List<page>) :
         return view
     }
 }
-
