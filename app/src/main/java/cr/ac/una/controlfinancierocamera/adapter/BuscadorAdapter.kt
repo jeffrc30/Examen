@@ -8,11 +8,24 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import cr.ac.una.controlfinancierocamera.Articulo
 import cr.ac.una.controlfinancierocamera.R
 import cr.ac.una.controlfinancierocamera.clases.page
+import cr.ac.una.controlfinancierocamera.clases.pages
+import android.content.Intent
+import android.net.Uri
 
-class BuscadorAdapter(context: Context, pages: List<page>) :
+
+class BuscadorAdapter(context: Context, pages: List<page>, private val listener: OnItemClickListener) :
     ArrayAdapter<page>(context, 0, pages) {
+
+  /*  interface OnItemClickListener {
+        fun onItemClick(articulo: Articulo)
+    }*/
+    interface OnItemClickListener {
+      fun onItemClick(page: page)
+    }
+
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.list_busqueda, parent, false)
@@ -33,6 +46,19 @@ class BuscadorAdapter(context: Context, pages: List<page>) :
                 .load(url)
                 .into(imageView)
         } ?: imageView.setImageResource(R.drawable.placeholder) // Imagen placeholder
+
+        /*view.setOnClickListener {
+            val articulo = Articulo(pageItem?.titles?.normalized ?: "Sin título", pageItem?.extract ?: "Sin extracto", pageItem?.thumbnail?.source)
+            // val articulo = convertirPageAArticulo(pageItem)
+            listener.onItemClick(articulo)
+
+        }*/
+        view.setOnClickListener {
+            val pageItem = getItem(position)
+            val url = "https://es.wikipedia.org/wiki/${pageItem?.title}"
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            context.startActivity(intent)
+        }
 
         return view
     }

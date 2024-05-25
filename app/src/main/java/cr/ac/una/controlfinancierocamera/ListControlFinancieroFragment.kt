@@ -18,11 +18,19 @@ import cr.ac.una.controlfinancierocamera.controller.PageController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import cr.ac.una.controlfinancierocamera.Articulo
+import cr.ac.una.controlfinancierocamera.DetalleArticuloDialogFragment
+import cr.ac.una.controlfinancierocamera.clases.page
+import android.content.Intent
+import android.net.Uri
 
-class ListControlFinancieroFragment : Fragment() {
+
+
+
+class ListControlFinancieroFragment : Fragment(), BuscadorAdapter.OnItemClickListener {
 
     private lateinit var buscadorAdapter: BuscadorAdapter
-    val pageController = PageController();
+    private val pageController = PageController();
     private lateinit var botonBuscar: Button
     private lateinit var buscadorView: SearchView
 
@@ -48,7 +56,7 @@ class ListControlFinancieroFragment : Fragment() {
         }
 
         val listView: ListView = view.findViewById(R.id.listaMovimientos)
-        buscadorAdapter = BuscadorAdapter(requireContext(), mutableListOf())
+        buscadorAdapter = BuscadorAdapter(requireContext(), mutableListOf(), this)
         listView.adapter = buscadorAdapter
     }
 
@@ -66,14 +74,37 @@ class ListControlFinancieroFragment : Fragment() {
             } catch (e: HttpException) {
                 withContext(Dispatchers.Main) {
                     Log.e("HTTP_ERROR", "Error: ${e.message}")
-                    Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_LONG)
+                        .show()
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Log.e("ERROR", "Error: ${e.message}")
-                    Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_LONG)
+                        .show()
                 }
             }
         }
+
     }
+
+    /*override fun onItemClick(articulo: Articulo) {
+        // Abrir el DialogFragment para mostrar el detalle del artículo
+        val fragment = DetalleArticuloDialogFragment.newInstance(articulo.titulo, articulo.contenido, articulo.imagenUrl)
+        fragment.show(requireFragmentManager(), "detalle_articulo_dialog")
+    }*/
+    override fun onItemClick(page: page) {
+        val url = "https://es.wikipedia.org/wiki/${page.title}"
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(intent)
+    }
+
 }
+
+
+
+
+
+
+
+

@@ -61,12 +61,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 title = R.string.menu_camera
                 fragment = ListControlFinancieroFragment()
             }
-            R.id.nav_gallery -> {
+       /*     R.id.nav_gallery -> {
                 title = R.string.menu_gallery
                 fragment= CameraFragment()
 
             }
-            R.id.nav_manage -> title = R.string.menu_tools
+            R.id.nav_manage -> title = R.string.menu_tools*/
 
             else -> throw IllegalArgumentException("menu option not implemented!!")
         }
