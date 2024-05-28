@@ -1,10 +1,16 @@
 package cr.ac.una.controlfinancierocamera
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -15,6 +21,9 @@ import cr.ac.menufragment.ListControlFinancieroFragment
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     //var movimientoController: MovimientoController = MovimientoController()
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+    }
 
     lateinit var drawerLayout: DrawerLayout
 
@@ -41,7 +50,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val navigationView = findViewById<NavigationView>(R.id.navigation_view)
         navigationView.setNavigationItemSelectedListener(this)
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.FOREGROUND_SERVICE), LOCATION_PERMISSION_REQUEST_CODE)
+        } else {
+            startLocationService()
+        }
 
+    }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startLocationService()
+            } else {
+                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
 
@@ -83,5 +110,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .replace(R.id.home_content, fragment)
             .commit()
         setTitle(title)
+    }
+
+    private fun startLocationService() {
+        val serviceIntent = Intent(this, LocationService::class.java)
+        ContextCompat.startForegroundService(this, serviceIntent)
     }
 }

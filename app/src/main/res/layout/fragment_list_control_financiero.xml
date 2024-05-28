@@ -35,7 +35,6 @@
             android:id="@+id/listaMovimientos"
             android:layout_width="411dp"
             android:layout_height="441dp"
-            android:layout_marginStart="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
