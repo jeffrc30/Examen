@@ -33,6 +33,9 @@ class LocationService : Service() {
     private lateinit var notificationManager: NotificationManager
     private var contNotificacion =2
 
+    private var lastLatitude: Double? = null
+    private var lastLongitude: Double? = null
+
     override fun onCreate() {
         super.onCreate()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -91,11 +94,27 @@ class LocationService : Service() {
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             locationResult.locations.forEach { location ->
-                getPlaceName(location.latitude, location.longitude)
+                val latitude = location.latitude
+                val longitude = location.longitude
+
+                // Check if the location has changed significantly
+                if (hasLocationChanged(latitude, longitude)) {
+                    lastLatitude = latitude
+                    lastLongitude = longitude
+                    getPlaceName(latitude, longitude)
+                }
             }
         }
     }
-
+    private fun hasLocationChanged(newLatitude: Double, newLongitude: Double): Boolean {
+        val threshold = 0.001 // Change this value to adjust sensitivity
+        if (lastLatitude == null || lastLongitude == null) {
+            return true
+        }
+        val latDiff = Math.abs(newLatitude - lastLatitude!!)
+        val lonDiff = Math.abs(newLongitude - lastLongitude!!)
+        return latDiff > threshold || lonDiff > threshold
+    }
 
     @SuppressLint("MissingPermission")
     private fun getPlaceName(latitude: Double, longitude: Double) {
