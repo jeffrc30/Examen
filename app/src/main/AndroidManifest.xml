@@ -2,16 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="cr.ac.una.gimenayjeff">
-
-    <!--<uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera" />-->
+    <!--
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
-
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
@@ -24,12 +23,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ControlFinancieroCamera"
         tools:targetApi="31">
+        <activity
+            android:name=".WebViewActivity"
+            android:exported="false" />
 
         <service
             android:name=".LocationService"
-            android:foregroundServiceType="location"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true"
+            android:foregroundServiceType="location" />
 
         <activity
             android:name=".MainActivity"

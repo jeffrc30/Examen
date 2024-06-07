@@ -26,8 +26,18 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
+import cr.ac.una.gimenayjeff.controller.PageController
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 
 class LocationService : Service() {
+
+    private val serviceScope = CoroutineScope(Dispatchers.IO)
+    private val pageController = PageController()
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var notificationManager: NotificationManager
@@ -127,13 +137,15 @@ class LocationService : Service() {
                 val response = task.result
                 val topPlaces = response.placeLikelihoods
                     .sortedByDescending { it.likelihood }
-                    .take(2)
+                    .take(1)
 
                 topPlaces.forEach { placeLikelihood ->
-                    val placeName = placeLikelihood.place.name
+                    val placeName = placeLikelihood.place.name ?: "Unknown"
                     val message = "Lugar: $placeName, Probabilidad: ${placeLikelihood.likelihood}"
-                    sendNotification(message, placeName)
+                    //sendNotification(message, placeName)
                     Log.d("LocationService", message)
+                    // Call searchWikipediaAndNotify with the place name
+                    searchWikipediaAndNotify(placeName)
                 }
             } else {
                 val exception = task.exception
@@ -143,6 +155,7 @@ class LocationService : Service() {
             }
         }
     }
+
 
     private fun sendNotification(message: String, placeName: String) {
         val notificationId = contNotificacion++
@@ -166,6 +179,27 @@ class LocationService : Service() {
             .build()
 
         notificationManager.notify(notificationId, notification)
+    }
+
+    private fun searchWikipediaAndNotify(placeName: String) {
+        val formattedQuery = placeName.replace(" ", "_")
+        serviceScope.launch {
+            try {
+                val resultadoBusqueda = withContext(Dispatchers.IO) {
+                    pageController.Buscar(formattedQuery)
+                }
+                if (resultadoBusqueda.isNotEmpty()) {
+                    sendNotification("Lugar: $placeName. Información encontrada en Wikipedia.", placeName)
+                    Log.d("ResultadoBusqueda", "Se encontró información: $resultadoBusqueda")
+                } else {
+                    Log.d("ResultadoBusqueda", "No se encontró información")
+                }
+            } catch (e: HttpException) {
+                Log.e("HTTP_ERROR", "No se encontró información. Error: ${e.message}")
+            } catch (e: Exception) {
+                Log.e("ERROR", "No se encontró información. Error: ${e.message}")
+            }
+        }
     }
 
     override fun onBind(intent: Intent?): IBinder? {

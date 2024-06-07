@@ -23,8 +23,6 @@ class BuscadorAdapter(context: Context, pages: List<page>, private val listener:
     interface OnItemClickListener {
       fun onItemClick(page: page)
     }
-
-
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.list_busqueda, parent, false)
 

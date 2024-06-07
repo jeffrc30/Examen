@@ -21,6 +21,7 @@ import cr.ac.una.gimenayjeff.clases.page
 import android.content.Intent
 import android.net.Uri
 import cr.ac.una.gimenayjeff.R
+import cr.ac.una.gimenayjeff.WebViewActivity
 
 class ListControlFinancieroFragment : Fragment(), BuscadorAdapter.OnItemClickListener {
 
@@ -88,7 +89,9 @@ class ListControlFinancieroFragment : Fragment(), BuscadorAdapter.OnItemClickLis
 
     override fun onItemClick(page: page) {
         val url = "https://es.wikipedia.org/wiki/${page.title}"
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        val intent = Intent(requireContext(), WebViewActivity::class.java).apply {
+            putExtra("url", url)
+        }
         startActivity(intent)
     }
 }
