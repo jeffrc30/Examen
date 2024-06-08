@@ -12,17 +12,19 @@ import cr.ac.una.gimenayjeff.clases.page
 import android.content.Intent
 import android.net.Uri
 import cr.ac.una.gimenayjeff.R
+import cr.ac.una.gimenayjeff.WebViewActivity
 
 
-class BuscadorAdapter(context: Context, pages: List<page>, private val listener: OnItemClickListener) :
-    ArrayAdapter<page>(context, 0, pages) {
+class BuscadorAdapter(
+    context: Context,
+    pages: List<page>,
+    private val listener: OnItemClickListener
+) : ArrayAdapter<page>(context, 0, pages) {
 
-  /*  interface OnItemClickListener {
-        fun onItemClick(articulo: Articulo)
-    }*/
     interface OnItemClickListener {
-      fun onItemClick(page: page)
+        fun onItemClick(page: page)
     }
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.list_busqueda, parent, false)
 
@@ -43,10 +45,14 @@ class BuscadorAdapter(context: Context, pages: List<page>, private val listener:
                 .into(imageView)
         } ?: imageView.setImageResource(R.drawable.placeholder) // Imagen placeholder
 
+        // Aquí cambiamos la lógica para abrir la WebViewActivity
         view.setOnClickListener {
             val pageItem = getItem(position)
             val url = "https://es.wikipedia.org/wiki/${pageItem?.title}"
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+
+            val intent = Intent(context, WebViewActivity::class.java).apply {
+                putExtra("url", url)
+            }
             context.startActivity(intent)
         }
 

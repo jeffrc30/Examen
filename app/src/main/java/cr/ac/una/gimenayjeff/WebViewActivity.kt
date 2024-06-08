@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class WebViewActivity : AppCompatActivity() {
@@ -22,10 +23,12 @@ class WebViewActivity : AppCompatActivity() {
 
         val url = intent.getStringExtra("url")
         Log.d("WebViewActivity", "URL recibida: $url")
-        if (url != null) {
+
+        if (!url.isNullOrBlank()) {
             webView.loadUrl(url)
         } else {
-            Log.e("WebViewActivity", "URL es null")
+            Log.e("WebViewActivity", "URL es null o está vacía")
+            Toast.makeText(this, "URL inválida. No se puede cargar la página.", Toast.LENGTH_SHORT).show()
         }
     }
 }
