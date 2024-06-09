@@ -13,6 +13,7 @@ import android.content.pm.PackageManager
 import android.os.IBinder
 import android.os.Looper
 import android.util.Log
+import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.common.api.ApiException
@@ -134,17 +135,13 @@ class LocationService : Service() {
         placeResponse.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val response = task.result
-                val topPlaces = response.placeLikelihoods
-                    .sortedByDescending { it.likelihood }
-                    .take(1)
+                val topPlace = response.placeLikelihoods
+                    .maxByOrNull { it.likelihood }
 
-                topPlaces.forEach { placeLikelihood ->
+                topPlace?.let { placeLikelihood ->
                     val placeName = placeLikelihood.place.name ?: "Unknown"
-                    val message = "Lugar: $placeName, Probabilidad: ${placeLikelihood.likelihood}"
-                    //sendNotification(message, placeName)
-                    Log.d("LocationService", message)
-                    // Call searchWikipediaAndNotify with the place name
-                    searchWikipediaAndNotify(placeName)
+                    Log.d("LocationService", "Lugar: $placeName, Probabilidad: ${placeLikelihood.likelihood}")
+                    searchWikipediaAndNotify(placeName, latitude, longitude)
                 }
             } else {
                 val exception = task.exception
@@ -155,78 +152,56 @@ class LocationService : Service() {
         }
     }
 
-
-    /*private fun sendNotification(message: String, placeName: String) {
-        val notificationId = contNotificacion++
-        val intent = Intent(this, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            putExtra("location_name", placeName)
-        }
-        val pendingIntent: PendingIntent = PendingIntent.getActivity(
-            this,
-            notificationId, // Use notificationId as the requestCode to ensure uniqueness
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-
-        val notification = NotificationCompat.Builder(this, "locationServiceChannel")
-            .setContentTitle("Lugar encontrado")
-            .setContentText(message)
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
-            .build()
-
-        notificationManager.notify(notificationId, notification)
-    }*/
-
-    private fun sendNotification(message: String, wikipediaUrl: String) {
-        val notificationId = contNotificacion++
+    private fun sendNotification(placeName: String, articleTitle: String, latitude: Double, longitude: Double, wikipediaUrl: String) {
+        contNotificacion++
         val intent = Intent(this, WebViewActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             putExtra("url", wikipediaUrl)
         }
         val pendingIntent: PendingIntent = PendingIntent.getActivity(
             this,
-            notificationId, // Use notificationId as the requestCode to ensure uniqueness
+            contNotificacion, // Use notificationId as the requestCode to ensure uniqueness
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
+        // Replace underscores with spaces in articleTitle
+        val formattedArticleTitle = articleTitle.replace("_", " ")
+
+        // Format latitude and longitude
+        val coordinates = "Latitud: $latitude, Longitud: $longitude"
+
+        // Set up collapsed layout
+        val collapsedView = RemoteViews(packageName, R.layout.notificacion_colapsada).apply {
+            setTextViewText(R.id.title, "Nuevo lugar: $placeName")
+            setTextViewText(R.id.coordinates, coordinates)
+            // Set the pending intent to expand the notification on click
+            setOnClickPendingIntent(R.id.collapsed_notification, pendingIntent)
+        }
+
+        // Set up expanded layout
+        val expandedView = RemoteViews(packageName, R.layout.notificacion_expandida).apply {
+            setTextViewText(R.id.title, placeName)
+            setTextViewText(R.id.message, formattedArticleTitle)
+            setTextViewText(R.id.coordinates, coordinates)
+            setOnClickPendingIntent(R.id.boton_notificacion, pendingIntent)
+        }
+
         val notification = NotificationCompat.Builder(this, "locationServiceChannel")
-            .setContentTitle("Lugar encontrado")
-            .setContentText(message)
             .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentIntent(pendingIntent)
+            .setContentTitle("Nuevo lugar: $placeName") // Fallback for older devices
+            .setCustomContentView(collapsedView)
+            .setCustomBigContentView(expandedView)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setAutoCancel(true)
             .build()
 
-        notificationManager.notify(notificationId, notification)
+        notificationManager.notify(contNotificacion, notification)
     }
 
 
-    /*private fun searchWikipediaAndNotify(placeName: String) {
-        val formattedQuery = placeName.replace(" ", "_")
-        serviceScope.launch {
-            try {
-                val resultadoBusqueda = withContext(Dispatchers.IO) {
-                    pageController.Buscar(formattedQuery)
-                }
-                if (resultadoBusqueda.isNotEmpty()) {
-                    sendNotification("Lugar: $placeName. Información encontrada en Wikipedia.", placeName)
-                    Log.d("ResultadoBusqueda", "Se encontró información: $resultadoBusqueda")
-                } else {
-                    Log.d("ResultadoBusqueda", "No se encontró información")
-                }
-            } catch (e: HttpException) {
-                Log.e("HTTP_ERROR", "No se encontró información. Error: ${e.message}")
-            } catch (e: Exception) {
-                Log.e("ERROR", "No se encontró información. Error: ${e.message}")
-            }
-        }
-    }*/
 
-    private fun searchWikipediaAndNotify(placeName: String) {
+    private fun searchWikipediaAndNotify(placeName: String, latitude: Double, longitude: Double) {
         val formattedQuery = placeName.replace(" ", "_")
         serviceScope.launch {
             try {
@@ -236,7 +211,7 @@ class LocationService : Service() {
                 if (resultadoBusqueda.isNotEmpty()) {
                     val firstResultTitle = resultadoBusqueda.first().title
                     val wikipediaUrl = "https://es.wikipedia.org/wiki/$firstResultTitle"
-                    sendNotification("Lugar: $placeName. Información encontrada en Wikipedia.", wikipediaUrl)
+                    sendNotification(placeName, firstResultTitle, latitude, longitude, wikipediaUrl)
                     Log.d("ResultadoBusqueda", "Se encontró información: $resultadoBusqueda")
                 } else {
                     Log.d("ResultadoBusqueda", "No se encontró información")
@@ -248,8 +223,6 @@ class LocationService : Service() {
             }
         }
     }
-
-
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
