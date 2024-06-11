@@ -154,32 +154,26 @@ class LocationService : Service() {
 
     private fun sendNotification(placeName: String, articleTitle: String, latitude: Double, longitude: Double, wikipediaUrl: String) {
         contNotificacion++
-        val intent = Intent(this, WebViewActivity::class.java).apply {
+        val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             putExtra("url", wikipediaUrl)
         }
         val pendingIntent: PendingIntent = PendingIntent.getActivity(
             this,
-            contNotificacion, // Use notificationId as the requestCode to ensure uniqueness
+            contNotificacion,
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        // Replace underscores with spaces in articleTitle
         val formattedArticleTitle = articleTitle.replace("_", " ")
-
-        // Format latitude and longitude
         val coordinates = "Latitud: $latitude, Longitud: $longitude"
 
-        // Set up collapsed layout
         val collapsedView = RemoteViews(packageName, R.layout.notificacion_colapsada).apply {
             setTextViewText(R.id.title, "Nuevo lugar: $placeName")
             setTextViewText(R.id.coordinates, coordinates)
-            // Set the pending intent to expand the notification on click
             setOnClickPendingIntent(R.id.collapsed_notification, pendingIntent)
         }
 
-        // Set up expanded layout
         val expandedView = RemoteViews(packageName, R.layout.notificacion_expandida).apply {
             setTextViewText(R.id.title, placeName)
             setTextViewText(R.id.message, formattedArticleTitle)
@@ -189,7 +183,7 @@ class LocationService : Service() {
 
         val notification = NotificationCompat.Builder(this, "locationServiceChannel")
             .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentTitle("Nuevo lugar: $placeName") // Fallback for older devices
+            .setContentTitle("Nuevo lugar: $placeName")
             .setCustomContentView(collapsedView)
             .setCustomBigContentView(expandedView)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -198,6 +192,7 @@ class LocationService : Service() {
 
         notificationManager.notify(contNotificacion, notification)
     }
+
 
 
 

@@ -13,8 +13,6 @@ import android.content.Intent
 import android.net.Uri
 import cr.ac.una.gimenayjeff.R
 import cr.ac.una.gimenayjeff.WebViewActivity
-
-
 class BuscadorAdapter(
     context: Context,
     pages: List<page>,
@@ -45,15 +43,8 @@ class BuscadorAdapter(
                 .into(imageView)
         } ?: imageView.setImageResource(R.drawable.placeholder) // Imagen placeholder
 
-        // Aquí cambiamos la lógica para abrir la WebViewActivity
         view.setOnClickListener {
-            val pageItem = getItem(position)
-            val url = "https://es.wikipedia.org/wiki/${pageItem?.title}"
-
-            val intent = Intent(context, WebViewActivity::class.java).apply {
-                putExtra("url", url)
-            }
-            context.startActivity(intent)
+            pageItem?.let { listener.onItemClick(it) }
         }
 
         return view

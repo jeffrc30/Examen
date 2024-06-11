@@ -55,10 +55,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startLocationService()
         }
 
-        val locationName = intent.getStringExtra("location_name")
-        if (locationName != null) {
-            Log.d("MainActivity", "Lugar presionado: $locationName")
-            openFragmentWithSearch(locationName)
+        // Verifica si se recibió una URL desde la notificación
+        val url = intent.getStringExtra("url")
+        if (url != null) {
+            Log.d("MainActivity", "URL recibida: $url")
+            openWebViewFragment(url)
         }
     }
 
@@ -73,15 +74,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun openFragmentWithSearch(query: String) {
-        val fragment = ListControlFinancieroFragment().apply {
-            arguments = Bundle().apply {
-                putString("search_query", query)
-            }
-        }
+    // Método para abrir WebViewFragment con la URL recibida
+    private fun openWebViewFragment(url: String) {
+        val fragment = WebViewFragment.newInstance(url)
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.home_content, fragment)
+            .addToBackStack(null)
             .commit()
     }
 
@@ -110,7 +109,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    fun reemplazarFragmento(fragment: Fragment, title: String) {
+    private fun reemplazarFragmento(fragment: Fragment, title: String) {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.home_content, fragment)

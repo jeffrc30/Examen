@@ -22,6 +22,7 @@ import android.content.Intent
 import android.net.Uri
 import cr.ac.una.gimenayjeff.R
 import cr.ac.una.gimenayjeff.WebViewActivity
+import cr.ac.una.gimenayjeff.WebViewFragment
 
 class ListControlFinancieroFragment : Fragment(), BuscadorAdapter.OnItemClickListener {
 
@@ -51,7 +52,7 @@ class ListControlFinancieroFragment : Fragment(), BuscadorAdapter.OnItemClickLis
         }
 
         val listView: ListView = view.findViewById(R.id.listaMovimientos)
-        buscadorAdapter = BuscadorAdapter(requireContext(), mutableListOf(), this)
+        buscadorAdapter = BuscadorAdapter(requireActivity(), mutableListOf(), this)
         listView.adapter = buscadorAdapter
 
         // Manejar búsqueda desde los argumentos
@@ -89,9 +90,13 @@ class ListControlFinancieroFragment : Fragment(), BuscadorAdapter.OnItemClickLis
 
     override fun onItemClick(page: page) {
         val url = "https://es.wikipedia.org/wiki/${page.title}"
-        val intent = Intent(requireContext(), WebViewActivity::class.java).apply {
-            putExtra("url", url)
-        }
-        startActivity(intent)
+        val fragment = WebViewFragment.newInstance(url)
+
+        // Usar el FragmentManager para reemplazar el fragmento
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.home_content, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }
+
