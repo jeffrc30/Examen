@@ -71,7 +71,7 @@ class LocationService : Service() {
         return NotificationCompat.Builder(this, "locationServiceChannel")
             .setContentTitle("Location Service")
             .setContentText(message)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.drawable.appicon)
             .build()
     }
 
@@ -182,7 +182,7 @@ class LocationService : Service() {
         }
 
         val notification = NotificationCompat.Builder(this, "locationServiceChannel")
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.drawable.appicon)
             .setContentTitle("Nuevo lugar: $placeName")
             .setCustomContentView(collapsedView)
             .setCustomBigContentView(expandedView)
