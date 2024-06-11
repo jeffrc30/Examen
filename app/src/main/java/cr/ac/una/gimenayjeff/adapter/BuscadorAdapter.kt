@@ -9,10 +9,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import cr.ac.una.gimenayjeff.clases.page
-import android.content.Intent
-import android.net.Uri
 import cr.ac.una.gimenayjeff.R
-import cr.ac.una.gimenayjeff.WebViewActivity
+
 class BuscadorAdapter(
     context: Context,
     pages: List<page>,

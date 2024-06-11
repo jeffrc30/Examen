@@ -18,13 +18,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import cr.ac.una.gimenayjeff.clases.page
-import android.content.Intent
-import android.net.Uri
 import cr.ac.una.gimenayjeff.R
-import cr.ac.una.gimenayjeff.WebViewActivity
 import cr.ac.una.gimenayjeff.WebViewFragment
 
-class ListControlFinancieroFragment : Fragment(), BuscadorAdapter.OnItemClickListener {
+class ListArticulosFragment : Fragment(), BuscadorAdapter.OnItemClickListener {
 
     private lateinit var buscadorAdapter: BuscadorAdapter
     private val pageController = PageController()
@@ -35,7 +32,7 @@ class ListControlFinancieroFragment : Fragment(), BuscadorAdapter.OnItemClickLis
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_list_control_financiero, container, false)
+        return inflater.inflate(R.layout.fragment_list_articulos, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

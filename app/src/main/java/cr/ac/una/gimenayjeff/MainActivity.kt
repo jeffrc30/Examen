@@ -16,7 +16,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
-import cr.ac.menufragment.ListControlFinancieroFragment
+import cr.ac.menufragment.ListArticulosFragment
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (menuItem.itemId) {
             R.id.nav_camera -> {
                 title = R.string.menu_camera
-                fragment = ListControlFinancieroFragment()
+                fragment = ListArticulosFragment()
             }
 
             else -> throw IllegalArgumentException("menu option not implemented!!")
