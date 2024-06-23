@@ -3,12 +3,21 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="menu_camera">Buscar Artículo</string>
+    <string name="menu_recientes">Ver Recientes</string>
+    <string name="menu_frecuentes">Ver Frecuentes</string>
+    <string name="menu_config">Configuraciones</string>
     <string name="menu_gallery">Cámara</string>
     <string name="menu_tools">Configuración</string>
     <string name="menu_share">Compartir</string>
     <string name="menu_send">Enviar</string>
     <string name="menu_group">Groupo</string>
     <string name="copyright">© Dispositivos móviles</string>
+    <string name="digite">Digite el nombre del artículo</string>
+    <string name="buscar">Buscar</string>
+    <string name="tituloRecientes">Lista de los lugares en donde ha estado</string>
+    <string name="configFrecuentes">Ingrese la cantidad de Locaciones frecuentes que desea ver: </string>
+    <string name="guardar">Guardar</string>
+    <string name="numero">Ingrese un número</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment genérico</string>
 </resources>

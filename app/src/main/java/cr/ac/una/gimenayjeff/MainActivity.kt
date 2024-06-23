@@ -100,6 +100,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 title = R.string.menu_camera
                 fragment = ListArticulosFragment()
             }
+            R.id.nav_recientes -> {
+                title = R.string.menu_recientes
+                fragment = ListRecientesFragment()
+            }
+            R.id.nav_frequentes -> {
+                title = R.string.menu_frecuentes
+                fragment = ListFrecuentesFragment()
+            }
+            R.id.nav_config -> {
+                title = R.string.menu_config
+                fragment = ConfiguracionFragment()
+            }
 
             else -> throw IllegalArgumentException("menu option not implemented!!")
         }

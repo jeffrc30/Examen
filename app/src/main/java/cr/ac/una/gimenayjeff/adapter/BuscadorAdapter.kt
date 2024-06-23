@@ -24,7 +24,7 @@ class BuscadorAdapter(
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.list_busqueda, parent, false)
 
-        val title = view.findViewById<TextView>(R.id.titleView)
+        val title = view.findViewById<TextView>(R.id.TitleView)
         val extract = view.findViewById<TextView>(R.id.extractView)
         val imageView = view.findViewById<ImageView>(R.id.image_view)
 

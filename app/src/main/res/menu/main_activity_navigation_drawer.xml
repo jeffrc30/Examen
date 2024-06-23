@@ -8,21 +8,19 @@
             android:id="@+id/nav_camera"
             android:icon="@android:drawable/ic_menu_agenda"
             android:title="@string/menu_camera" />
-       <!-- <item
-            android:id="@+id/nav_gallery"
-            android:icon="@android:drawable/ic_menu_camera"
-            android:title="@string/menu_gallery" />-->
-    </group>
-
-  <!--  <group
-        android:id="@+id/group1"
-        android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@android:drawable/ic_menu_manage"
-            android:title="@string/menu_tools" />
-    </group> -->
+            android:id="@+id/nav_recientes"
+            android:icon="@drawable/ic_reciente"
+            android:title="@string/menu_recientes" />
+        <item
+            android:id="@+id/nav_frequentes"
+            android:icon="@drawable/ic_frecuente"
+            android:title="@string/menu_frecuentes" />
+        <item
+            android:id="@+id/nav_config"
+            android:icon="@drawable/ic_config"
+            android:title="@string/menu_config" />
 
-
+    </group>
 
 </menu>

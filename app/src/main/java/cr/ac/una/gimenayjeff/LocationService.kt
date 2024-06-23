@@ -27,12 +27,18 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
+import cr.ac.una.gimenayjeff.clases.Movimiento
+import cr.ac.una.gimenayjeff.clases.thumbnail
 import cr.ac.una.gimenayjeff.controller.PageController
+import cr.ac.una.gimenayjeff.db.AppDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class LocationService : Service() {
 
@@ -152,8 +158,9 @@ class LocationService : Service() {
         }
     }
 
-    private fun sendNotification(placeName: String, articleTitle: String, latitude: Double, longitude: Double, wikipediaUrl: String) {
+    private fun sendNotification(placeName: String, articleTitle: String, latitude: Double, longitude: Double, wikipediaUrl: String, _descripcion: String, _img: thumbnail) {
         contNotificacion++
+
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             putExtra("url", wikipediaUrl)
@@ -167,6 +174,9 @@ class LocationService : Service() {
 
         val formattedArticleTitle = articleTitle.replace("_", " ")
         val coordinates = "Latitud: $latitude, Longitud: $longitude"
+        // Guardar datos de la notificación en la base de datos
+        guardarDatosDeNotificacion(coordinates, placeName, formattedArticleTitle, wikipediaUrl, _descripcion, _img)
+
 
         val collapsedView = RemoteViews(packageName, R.layout.notificacion_colapsada).apply {
             setTextViewText(R.id.title, "Nuevo lugar: $placeName")
@@ -193,9 +203,6 @@ class LocationService : Service() {
         notificationManager.notify(contNotificacion, notification)
     }
 
-
-
-
     private fun searchWikipediaAndNotify(placeName: String, latitude: Double, longitude: Double) {
         val formattedQuery = placeName.replace(" ", "_")
         serviceScope.launch {
@@ -206,7 +213,9 @@ class LocationService : Service() {
                 if (resultadoBusqueda.isNotEmpty()) {
                     val firstResultTitle = resultadoBusqueda.first().title
                     val wikipediaUrl = "https://es.wikipedia.org/wiki/$firstResultTitle"
-                    sendNotification(placeName, firstResultTitle, latitude, longitude, wikipediaUrl)
+                    val _descripcion = resultadoBusqueda.first().extract
+                    val _img = resultadoBusqueda.first().thumbnail
+                    sendNotification(placeName, firstResultTitle, latitude, longitude, wikipediaUrl, _descripcion, _img)
                     Log.d("ResultadoBusqueda", "Se encontró información: $resultadoBusqueda")
                 } else {
                     Log.d("ResultadoBusqueda", "No se encontró información")
@@ -220,5 +229,34 @@ class LocationService : Service() {
     }
     override fun onBind(intent: Intent?): IBinder? {
         return null
+    }
+
+    //nuevo
+    private fun guardarDatosDeNotificacion(coordinates: String, name: String, message: String, _URL: String, _descripcion: String, _img: thumbnail) {
+        val formattedMessage = message.replace(" ", "_")
+        val currentDateAndTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(
+            Date()
+        )
+
+        val imageUrl = _img.source
+
+        val movimiento = Movimiento(
+            id = null,  // Se autogenerará
+            Coordenadas = coordinates,
+            FechayHora = currentDateAndTime,
+            NombreWiki = formattedMessage,
+            Nombre = name,
+            Imagen = imageUrl,
+            Descripcion = _descripcion,
+            URL = _URL,
+        )
+
+        // Insertar el movimiento en la base de datos
+        serviceScope.launch {
+            val db = AppDatabase.getInstance(this@LocationService)
+            withContext(Dispatchers.IO) {
+                db.ubicacionDao().insert(movimiento)
+            }
+        }
     }
 }
