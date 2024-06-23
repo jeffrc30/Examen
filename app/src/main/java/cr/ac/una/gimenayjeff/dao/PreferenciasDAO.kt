@@ -10,15 +10,12 @@ import cr.ac.una.gimenayjeff.clases.Preferencia
 @Dao
 interface PreferenciasDAO {
     @Insert
-    suspend fun insert(preferencias: Preferencia): Long
+    suspend fun insert(preferencia: Preferencia): Long
 
-    @Query("SELECT * FROM Preferencia WHERE id = :id")
-    suspend fun getPreferenciasById(id: Long): Preferencia?
+    @Query("SELECT * FROM Preferencia LIMIT 1")
+    suspend fun getFirstPreferencia(): Preferencia?
 
     @Update
-    suspend fun update(preferencias: Preferencia)
-
-    @Delete
-    suspend fun delete(preferencias: Preferencia)
+    suspend fun update(preferencia: Preferencia)
 
 }

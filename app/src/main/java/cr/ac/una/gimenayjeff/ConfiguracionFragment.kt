@@ -9,15 +9,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import androidx.lifecycle.lifecycleScope
+import cr.ac.una.gimenayjeff.clases.Preferencia
+import cr.ac.una.gimenayjeff.dao.PreferenciasDAO
+import cr.ac.una.gimenayjeff.db.AppDatabase
+import kotlinx.coroutines.launch
 
 class ConfiguracionFragment : Fragment() {
+
+    private lateinit var preferenciasDao: PreferenciasDAO
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflar el layout para este fragmento
         val view = inflater.inflate(R.layout.fragment_configuracion, container, false)
+
+        // Inicializa la base de datos
+        preferenciasDao = AppDatabase.getInstance(requireContext()).preferenciasDao()
 
         val numeroEditText: EditText = view.findViewById(R.id.preferenciaNumero)
         val guardarButton: Button = view.findViewById(R.id.guardarButton)
@@ -38,12 +47,14 @@ class ConfiguracionFragment : Fragment() {
                         mostrarAlerta("El número debe ser como máximo 15. Se ha puesto como preferencia 15.")
                     }
                     else -> {
-                        mostrarAlerta("Ahora vera $numero locaciones recientes.")
+                        mostrarAlerta("Ahora verá $numero locaciones recientes.")
                     }
                 }
 
-                // Log del número ajustado
-                Log.d("ConfiguracionFragment", "Número ingresado y ajustado: $numero")
+                // Guardar el número en la base de datos
+                lifecycleScope.launch {
+                    manejarPreferencia(numero)
+                }
             } else {
                 mostrarAlerta("Ingrese un número válido.")
             }
@@ -61,5 +72,24 @@ class ConfiguracionFragment : Fragment() {
         }
         val alerta = builder.create()
         alerta.show()
+    }
+
+    private suspend fun manejarPreferencia(numero: Int) {
+        try {
+            val preferenciaExistente = preferenciasDao.getFirstPreferencia()
+            if (preferenciaExistente != null) {
+                // Si existe, actualizarla
+                preferenciaExistente.CantidadFavoritos = numero
+                preferenciasDao.update(preferenciaExistente)
+                Log.d("ConfiguracionFragment", "Preferencia actualizada con el número: $numero")
+            } else {
+                // Si no existe, insertarla
+                val nuevaPreferencia = Preferencia(id = null, CantidadFavoritos = numero)
+                preferenciasDao.insert(nuevaPreferencia)
+                Log.d("ConfiguracionFragment", "Nueva preferencia insertada con el número: $numero")
+            }
+        } catch (e: Exception) {
+            Log.e("ConfiguracionFragment", "Error al manejar la preferencia: ${e.message}")
+        }
     }
 }

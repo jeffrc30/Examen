@@ -14,7 +14,8 @@
     <string name="copyright">© Dispositivos móviles</string>
     <string name="digite">Digite el nombre del artículo</string>
     <string name="buscar">Buscar</string>
-    <string name="tituloRecientes">Lista de los lugares en donde ha estado</string>
+    <string name="tituloRecientes">Lista de los lugares en donde ha estado recientemente:</string>
+    <string name="tituloFrecuentes">Lista de los lugares en donde ha estado frecuentemente:</string>
     <string name="configFrecuentes">Ingrese la cantidad de Locaciones frecuentes que desea ver: </string>
     <string name="guardar">Guardar</string>
     <string name="numero">Ingrese un número</string>
